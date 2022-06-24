@@ -1,0 +1,99 @@
+{% extends "home/home.html" %}
+
+{% block body %}
+
+    {% for message in messages %}
+    <p class="alert alert-success mt-3">{{message}}</p>
+    {% endfor %}
+    <h1 style="text-align: center">Cadastrando de Cliente</h1>
+    {% if cliente %}
+    <form action="{% url 'app:edit_id' cliente.id %}" method="POST">
+        {% csrf_token %}
+        <div class="row g-3 py-3">
+            <div class="col-md">
+                <div class="form-floating">
+                    <input type="text" name="nome" value="{{cliente.nome}}" class="form-control" id="floatingInputGrid" placeholder="Nome Completo">
+                    <label for="floatingInputGrid">Nome Completo</label>
+                </div>
+            </div>
+            <div class="col-md">
+                <div class="form-floating">
+                    <input type="text" name="cpf" value="{{cliente.cpf}}" class="form-control" id="floatingInputGrid" placeholder="CPF">
+                    <label for="floatingInputGrid">CPF</label>
+                </div>
+            </div>
+            <div class="col-md">
+                <div class="form-floating">
+                    <input type="text" name="telefone" value="{{cliente.telefone}}" class="form-control" id="floatingInputGrid" placeholder="Telefone">
+                    <label for="floatingInputGrid">Telefone</label>
+                </div>
+            </div>
+            <div class="col-md">
+                <div class="form-group">
+                    <button type="submit" class="btn btn-success btn-block btn-lg">Atualizar</button>
+                </div>
+            </div>
+        </div>        
+    </form>
+    {% else %}
+    <form action="/app/add/" method="POST">
+        {% csrf_token %}
+        <div class="row g-3 py-3">
+            <div class="col-md">
+                <div class="form-floating">
+                    <input type="text" name="nome" class="form-control" id="floatingInputGrid" placeholder="Nome Completo">
+                    <label for="floatingInputGrid">Nome Completo</label>
+                </div>
+            </div>
+            <div class="col-md">
+                <div class="form-floating">
+                    <input type="text" name="cpf" class="form-control" id="floatingInputGrid" placeholder="CPF">
+                    <label for="floatingInputGrid">CPF</label>
+                </div>
+            </div>
+            <div class="col-md">
+                <div class="form-floating">
+                    <input type="text" name="telefone" class="form-control" id="floatingInputGrid" placeholder="Telefone">
+                    <label for="floatingInputGrid">Telefone</label>
+                </div>
+            </div>
+            <div class="col-md">
+                <div class="form-group">
+                    <button type="submit" class="btn btn-success btn-block btn-lg">Adicionar</button>
+                </div>
+            </div>
+        </div>        
+    </form>
+    {% endif %}
+    <table class="table table-bordered" style="text-align: center">
+        <thead class="border-bottom font-weight-bold">
+            <tr>
+                <td>Nº</td>
+                <td>NOME COMPLETO</td>
+                <td>CPF</td>
+                <td>TELEFONE</td>
+                <td>OPÇÕES</td>
+            </tr>
+        </thead>
+        <tbody>
+            {% for cliente in clientes %}
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td>{{cliente.nome}}</td>
+                <td>{{cliente.cpf}}</td>
+                <td>{{cliente.telefone}}</td>
+                <td>
+                    <a href="{% url 'app:edit' cliente.id %}" class="btn text-primary px-3">
+                        <i class="far fa-edit fa-lg"></i></a>
+                    <form action="{% url 'app:delete' cliente.id %}" method="POST" class="d-inline">
+                        {% csrf_token %}
+                        <button type="submit" class="btn">
+                            <i class="far fa-trash-alt fa-lg text-danger float-right"></i></button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+{% endblock %}
